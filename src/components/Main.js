@@ -1,6 +1,15 @@
 // import Input from './assets/PersonalInformation';
 import { Component } from 'react';
 
+const firstExperience = {
+  position: 'Position',
+  company: 'Company',
+  city: 'City',
+  from: 'From',
+  to: 'To',
+  id: '0',
+};
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -14,41 +23,39 @@ class Main extends Component {
         phone: 'Phone Number',
         email: 'Email',
       },
-      experience1: {
-        position: 'Position',
-        company: 'Company',
-        city: 'City',
-        from: 'From',
-        to: 'To',
-      },
-      experiencesCount: 1,
+      experience1: firstExperience,
+      experiences: [firstExperience],
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.addExperience = this.addExperience.bind(this);
   }
 
   handleChange(e) {
+    const identifier = e.target.parentNode.className;
+    const { experiences } = this.state;
     this.setState((prevState) => ({
-
-      personalInfo: {
-        ...prevState.personalInfo,
+      [identifier]: {
+        ...prevState[identifier],
         [e.target.name]: e.target.value,
       },
-      experience1: {
-        ...prevState.experience1,
-        [e.target.name]: e.target.value,
-      },
+      experiences: experiences.map((experience, index) => {
+        if (experience.id === e.target.parentNode.id) {
+          return {
+            ...prevState.experiences[index],
+            [e.target.name]: e.target.value,
+          };
+        }
+        return experience;
+      }),
     }));
-    console.log(this.addExperience());
   }
 
   addExperience() {
     const {
-      experiencesCount,
+      experiences,
     } = this.state;
 
-    const newExp = `experience${experiencesCount + 1}`;
+    const newExp = `experience${experiences.length + 1}`;
 
     this.setState((prevState) => ({
       ...prevState,
@@ -59,11 +66,10 @@ class Main extends Component {
         from: 'From',
         to: 'To',
       },
-      experiencesCount: experiencesCount + 1,
+      experiences: experiences.concat(newExp),
     }));
-    console.log(this.state);
     return (
-      <div className={`experience${experiencesCount + 1}`}>
+      <div className="experience" id="0">
         <input type="text2" name="position" placeholder="Position" onChange={this.handleChange} />
         <input type="text" name="company" placeholder="Company" onChange={this.handleChange} />
         <input type="text" name="city" placeholder="City" onChange={this.handleChange} />
@@ -76,14 +82,14 @@ class Main extends Component {
 
   render() {
     const {
-      personalInfo, experience1,
+      personalInfo, /* experience1, */ experiences,
     } = this.state;
     return (
       <main>
         <div className="container">
           <section>
             <h2>Personal Information</h2>
-            <div className="personalInformation">
+            <div className="personalInfo">
               <input type="text" name="firstName" placeholder="First Name" onChange={this.handleChange} />
               <input type="text" name="lastName" placeholder="Last Name" onChange={this.handleChange} />
               <input type="text" name="title" placeholder="Title" onChange={this.handleChange} />
@@ -92,15 +98,28 @@ class Main extends Component {
               <input type="email" name="email" placeholder="Email" onChange={this.handleChange} />
             </div>
             <h2>Experience</h2>
-            <div className="experience">
-              <div>
-                <input type="text" name="position" placeholder="Position" onChange={this.handleChange} />
-                <input type="text" name="company" placeholder="Company" onChange={this.handleChange} />
+            <div className="experiences">
+              {experiences.map((experience, index) => {
+                const experienceClass = `experience${index + 1}`;
+                return (
+                  <div className={experienceClass} id={experience.id} key={experience.id}>
+                    <input type="text" name="position" placeholder="Position" onChange={this.handleChange} />
+                    <input type="text" name="company" placeholder="Company" onChange={this.handleChange} />
+                    <input type="text" name="city" placeholder="City" onChange={this.handleChange} />
+                    <input type="date" name="from" placeholder="From" onChange={this.handleChange} />
+                    <input type="date" name="to" placeholder="To" onChange={this.handleChange} />
+                    <button type="button">Delete</button>
+                  </div>
+                );
+              })}
+              {/* <div className="experience1" id="0">
+          <input type="text" name="position" placeholder="Position" onChange={this.handleChange} />
+          <input type="text" name="company" placeholder="Company" onChange={this.handleChange} />
                 <input type="text" name="city" placeholder="City" onChange={this.handleChange} />
                 <input type="date" name="from" placeholder="From" onChange={this.handleChange} />
                 <input type="date" name="to" placeholder="To" onChange={this.handleChange} />
                 <button type="button">Delete</button>
-              </div>
+              </div> */}
               <button type="button" onClick={this.addExperience}>Add</button>
             </div>
 
@@ -115,11 +134,20 @@ class Main extends Component {
               <p>{personalInfo.email}</p>
             </div>
             <div>
-              <p>{experience1.position}</p>
+              {experiences.map((experience) => (
+                <div key={experience.id}>
+                  <p>{experience.position}</p>
+                  <p>{experience.company}</p>
+                  <p>{experience.city}</p>
+                  <p>{experience.from}</p>
+                  <p>{experience.to}</p>
+                </div>
+              ))}
+              {/* <p>{experience1.position}</p>
               <p>{experience1.company}</p>
               <p>{experience1.city}</p>
               <p>{experience1.from}</p>
-              <p>{experience1.to}</p>
+              <p>{experience1.to}</p> */}
             </div>
           </section>
         </div>
