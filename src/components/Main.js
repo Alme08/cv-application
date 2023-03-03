@@ -1,5 +1,6 @@
 // import Input from './assets/PersonalInformation';
 import { Component } from 'react';
+import uniqid from 'uniqid';
 
 const firstExperience = {
   position: 'Position',
@@ -7,7 +8,7 @@ const firstExperience = {
   city: 'City',
   from: 'From',
   to: 'To',
-  id: '0',
+  id: uniqid(),
 };
 
 class Main extends Component {
@@ -56,6 +57,7 @@ class Main extends Component {
     } = this.state;
 
     const newExp = `experience${experiences.length + 1}`;
+    const idExp = uniqid();
 
     this.setState((prevState) => ({
       ...prevState,
@@ -65,19 +67,17 @@ class Main extends Component {
         city: 'City',
         from: 'From',
         to: 'To',
+        id: idExp,
       },
-      experiences: experiences.concat(newExp),
+      experiences: experiences.concat({
+        position: 'Position',
+        company: 'Company',
+        city: 'City',
+        from: 'From',
+        to: 'To',
+        id: idExp,
+      }),
     }));
-    return (
-      <div className="experience" id="0">
-        <input type="text2" name="position" placeholder="Position" onChange={this.handleChange} />
-        <input type="text" name="company" placeholder="Company" onChange={this.handleChange} />
-        <input type="text" name="city" placeholder="City" onChange={this.handleChange} />
-        <input type="date" name="from" placeholder="From" onChange={this.handleChange} />
-        <input type="date" name="to" placeholder="To" onChange={this.handleChange} />
-        <button type="button">Delete</button>
-      </div>
-    );
   }
 
   render() {
@@ -133,22 +133,20 @@ class Main extends Component {
               <p>{personalInfo.phone}</p>
               <p>{personalInfo.email}</p>
             </div>
-            <div>
-              {experiences.map((experience) => (
-                <div key={experience.id}>
-                  <p>{experience.position}</p>
-                  <p>{experience.company}</p>
-                  <p>{experience.city}</p>
-                  <p>{experience.from}</p>
-                  <p>{experience.to}</p>
-                </div>
-              ))}
-              {/* <p>{experience1.position}</p>
+            {experiences.map((experience) => (
+              <div key={experience.id}>
+                <p>{experience.position}</p>
+                <p>{experience.company}</p>
+                <p>{experience.city}</p>
+                <p>{experience.from}</p>
+                <p>{experience.to}</p>
+              </div>
+            ))}
+            {/* <p>{experience1.position}</p>
               <p>{experience1.company}</p>
               <p>{experience1.city}</p>
               <p>{experience1.from}</p>
               <p>{experience1.to}</p> */}
-            </div>
           </section>
         </div>
       </main>
