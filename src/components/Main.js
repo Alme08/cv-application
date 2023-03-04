@@ -112,14 +112,6 @@ class Main extends Component {
                   </div>
                 );
               })}
-              {/* <div className="experience1" id="0">
-          <input type="text" name="position" placeholder="Position" onChange={this.handleChange} />
-          <input type="text" name="company" placeholder="Company" onChange={this.handleChange} />
-                <input type="text" name="city" placeholder="City" onChange={this.handleChange} />
-                <input type="date" name="from" placeholder="From" onChange={this.handleChange} />
-                <input type="date" name="to" placeholder="To" onChange={this.handleChange} />
-                <button type="button">Delete</button>
-              </div> */}
               <button type="button" onClick={this.addExperience}>Add</button>
             </div>
 
@@ -142,11 +134,6 @@ class Main extends Component {
                 <p>{experience.to}</p>
               </div>
             ))}
-            {/* <p>{experience1.position}</p>
-              <p>{experience1.company}</p>
-              <p>{experience1.city}</p>
-              <p>{experience1.from}</p>
-              <p>{experience1.to}</p> */}
           </section>
         </div>
       </main>
