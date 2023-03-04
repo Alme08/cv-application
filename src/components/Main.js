@@ -29,6 +29,7 @@ class Main extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.addExperience = this.addExperience.bind(this);
+    this.deleteExperience = this.deleteExperience.bind(this);
   }
 
   handleChange(e) {
@@ -49,13 +50,11 @@ class Main extends Component {
         return experience;
       }),
     }));
+    console.log(this.state);
   }
 
   addExperience() {
-    const {
-      experiences,
-    } = this.state;
-
+    const { experiences } = this.state;
     const newExp = `experience${experiences.length + 1}`;
     const idExp = uniqid();
 
@@ -80,9 +79,20 @@ class Main extends Component {
     }));
   }
 
+  deleteExperience(e) {
+    this.setState((prevState) => {
+      const state = { ...prevState };
+      state[e.target.parentNode.className] = undefined;
+      state.experiences = state.experiences.filter(
+        (experience) => experience.id !== e.target.parentNode.id,
+      );
+      return state;
+    });
+  }
+
   render() {
     const {
-      personalInfo, /* experience1, */ experiences,
+      personalInfo, experiences,
     } = this.state;
     return (
       <main>
@@ -108,11 +118,11 @@ class Main extends Component {
                     <input type="text" name="city" placeholder="City" onChange={this.handleChange} />
                     <input type="date" name="from" placeholder="From" onChange={this.handleChange} />
                     <input type="date" name="to" placeholder="To" onChange={this.handleChange} />
-                    <button type="button">Delete</button>
+                    <button type="button" onClick={this.deleteExperience}>Delete</button>
                   </div>
                 );
               })}
-              <button type="button" onClick={this.addExperience}>Add</button>
+              <button type="button" onClick={this.addExperience} disabled={experiences.length > 4}>Add</button>
             </div>
 
           </section>
