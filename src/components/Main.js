@@ -10,7 +10,15 @@ const firstExperience = {
   to: 'To',
   id: uniqid(),
 };
-
+const firstEducation = {
+  university: 'University Name',
+  city: 'City',
+  degree: 'Degree',
+  subject: 'Subject',
+  from: 'From',
+  to: 'To',
+  id: uniqid(),
+};
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -26,15 +34,18 @@ class Main extends Component {
       },
       experience1: firstExperience,
       experiences: [firstExperience],
+      education1: firstEducation,
+      educations: [firstEducation],
     };
     this.handleChange = this.handleChange.bind(this);
     this.addExperience = this.addExperience.bind(this);
+    this.addEducation = this.addEducation.bind(this);
     this.deleteExperience = this.deleteExperience.bind(this);
   }
 
   handleChange(e) {
     const identifier = e.target.parentNode.className;
-    const { experiences } = this.state;
+    const { experiences, educations } = this.state;
     this.setState((prevState) => ({
       [identifier]: {
         ...prevState[identifier],
@@ -48,6 +59,15 @@ class Main extends Component {
           };
         }
         return experience;
+      }),
+      educations: educations.map((education, index) => {
+        if (education.id === e.target.parentNode.id) {
+          return {
+            ...prevState.educations[index],
+            [e.target.name]: e.target.value,
+          };
+        }
+        return education;
       }),
     }));
     console.log(this.state);
@@ -79,6 +99,34 @@ class Main extends Component {
     }));
   }
 
+  addEducation() {
+    const { educations } = this.state;
+    const newEdu = `education${educations.length + 1}`;
+    const idEdu = uniqid();
+
+    this.setState((prevState) => ({
+      ...prevState,
+      [newEdu]: {
+        university: 'University Name',
+        city: 'City',
+        degree: 'Degree',
+        subject: 'Subject',
+        from: 'From',
+        to: 'To',
+        id: idEdu,
+      },
+      educations: educations.concat({
+        university: 'University Name',
+        city: 'City',
+        degree: 'Degree',
+        subject: 'Subject',
+        from: 'From',
+        to: 'To',
+        id: idEdu,
+      }),
+    }));
+  }
+
   deleteExperience(e) {
     this.setState((prevState) => {
       const state = { ...prevState };
@@ -86,13 +134,16 @@ class Main extends Component {
       state.experiences = state.experiences.filter(
         (experience) => experience.id !== e.target.parentNode.id,
       );
+      state.educations = state.educations.filter(
+        (education) => education.id !== e.target.parentNode.id,
+      );
       return state;
     });
   }
 
   render() {
     const {
-      personalInfo, experiences,
+      personalInfo, experiences, educations,
     } = this.state;
     return (
       <main>
@@ -107,6 +158,7 @@ class Main extends Component {
               <input type="tel" name="phone" placeholder="Phone" onChange={this.handleChange} />
               <input type="email" name="email" placeholder="Email" onChange={this.handleChange} />
             </div>
+
             <h2>Experience</h2>
             <div className="experiences">
               {experiences.map((experience, index) => {
@@ -123,6 +175,25 @@ class Main extends Component {
                 );
               })}
               <button type="button" onClick={this.addExperience} disabled={experiences.length > 4}>Add</button>
+            </div>
+
+            <h2>Education</h2>
+            <div className="educations">
+              {educations.map((education, index) => {
+                const educationClass = `education${index + 1}`;
+                return (
+                  <div className={educationClass} id={education.id} key={education.id}>
+                    <input type="text" name="university" placeholder="University" onChange={this.handleChange} />
+                    <input type="text" name="city" placeholder="City" onChange={this.handleChange} />
+                    <input type="text" name="degree" placeholder="Degree" onChange={this.handleChange} />
+                    <input type="text" name="subject" placeholder="Subject" onChange={this.handleChange} />
+                    <input type="date" name="from" placeholder="From" onChange={this.handleChange} />
+                    <input type="date" name="to" placeholder="To" onChange={this.handleChange} />
+                    <button type="button" onClick={this.deleteExperience}>Delete</button>
+                  </div>
+                );
+              })}
+              <button type="button" onClick={this.addEducation} disabled={educations.length > 4}>Add</button>
             </div>
 
           </section>
@@ -142,6 +213,16 @@ class Main extends Component {
                 <p>{experience.city}</p>
                 <p>{experience.from}</p>
                 <p>{experience.to}</p>
+              </div>
+            ))}
+            {educations.map((education) => (
+              <div key={education.id}>
+                <p>{education.university}</p>
+                <p>{education.city}</p>
+                <p>{education.degree}</p>
+                <p>{education.subject}</p>
+                <p>{education.from}</p>
+                <p>{education.to}</p>
               </div>
             ))}
           </section>
