@@ -1,6 +1,7 @@
 // import Input from './assets/PersonalInformation';
 import { Component } from 'react';
 import uniqid from 'uniqid';
+import image from '../assets/empty.jpg';
 
 const firstExperience = {
   position: 'Position',
@@ -31,13 +32,16 @@ class Main extends Component {
         address: 'Address',
         phone: 'Phone Number',
         email: 'Email',
+        description: 'Description',
       },
+      img: null,
       experience1: firstExperience,
       experiences: [firstExperience],
       education1: firstEducation,
       educations: [firstEducation],
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
     this.addExperience = this.addExperience.bind(this);
     this.addEducation = this.addEducation.bind(this);
     this.deleteExperience = this.deleteExperience.bind(this);
@@ -71,6 +75,19 @@ class Main extends Component {
       }),
     }));
     console.log(this.state);
+  }
+
+  handleUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState(({
+        img: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
   }
 
   addExperience() {
@@ -143,20 +160,23 @@ class Main extends Component {
 
   render() {
     const {
-      personalInfo, experiences, educations,
+      img, personalInfo, experiences, educations,
     } = this.state;
+    // const url = './src/assets/empty.jpg';
     return (
       <main>
         <div className="container">
-          <section>
+          <section className="editor">
             <h2>Personal Information</h2>
             <div className="personalInfo">
               <input type="text" name="firstName" placeholder="First Name" onChange={this.handleChange} />
               <input type="text" name="lastName" placeholder="Last Name" onChange={this.handleChange} />
               <input type="text" name="title" placeholder="Title" onChange={this.handleChange} />
+              <input type="file" name="img" onChange={this.handleUpload} />
               <input type="text" name="address" placeholder="Address" onChange={this.handleChange} />
               <input type="tel" name="phone" placeholder="Phone" onChange={this.handleChange} />
               <input type="email" name="email" placeholder="Email" onChange={this.handleChange} />
+              <textarea name="description" placeholder="Description" onChange={this.handleChange} />
             </div>
 
             <h2>Experience</h2>
@@ -199,12 +219,16 @@ class Main extends Component {
           </section>
           <section>
             <div>
+              {img
+                ? <img src={img} alt="user" />
+                : <img src={image} alt="userw" />}
               <p>{personalInfo.firstName}</p>
               <p>{personalInfo.lastName}</p>
               <p>{personalInfo.title}</p>
               <p>{personalInfo.address}</p>
               <p>{personalInfo.phone}</p>
               <p>{personalInfo.email}</p>
+              <p>{personalInfo.description}</p>
             </div>
             {experiences.map((experience) => (
               <div key={experience.id}>
