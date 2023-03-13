@@ -61,7 +61,7 @@ img {
 }
 
 .container {
-	max-width: 1500px;
+	max-width: 1700px;
 	margin: 0 auto;
 	overflow: auto;
 	padding: 0 40px;
@@ -72,4 +72,33 @@ img {
 	justify-content: center;
 	align-items: center;
 	height: 100%;
+}
+
+main {
+	background-color: #cccccc;
+}
+main .container {
+	display: flex;
+	gap: 50px;
+}
+main > .container > section {
+	margin-top: 50px;
+	padding: 20px;
+	background-color: #eeeeee;
+	border-radius: 10px;
+	width: 50%;
+	box-shadow: 0px 5px 17px 3px rgba(0, 0, 0, 0.33);
+	-webkit-box-shadow: 0px 5px 17px 3px rgba(0, 0, 0, 0.33);
+	-moz-box-shadow: 0px 5px 17px 3px rgba(0, 0, 0, 0.33);
+}
+
+main > .container > .editor > h2 {
+	font-size: 30px;
+}
+main > .container > .editor > div {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+main > .container > .editor > div > input {
 }
